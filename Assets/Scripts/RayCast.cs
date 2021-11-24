@@ -23,10 +23,10 @@ public class RayCast : MonoBehaviour
     
     void Start()
     {
-        isClicked = false;
         nextTime = 0;     
         pauseTime = 1f;
         isWorking=false;
+        isClicked = false;
     }
 
     // Update is called once per frame
@@ -43,29 +43,28 @@ public class RayCast : MonoBehaviour
         
         if(Input.GetMouseButtonDown(0) && isClicked == false)
         {
-                if(Physics.Raycast(ray, out hit) == true)
+            if(Physics.Raycast(ray, out hit) == true)
+            {
+                var selection = hit.transform;
+                Debug.Log("El rayo toca con: "+ hit.transform.gameObject.tag);
+                if(selection.CompareTag("CUBO1") || selection.CompareTag("CUBO2") || selection.CompareTag("ESFERA"))
                 {
-                    var selection = hit.transform;
-                    Debug.Log("El rayo toca con: "+ hit.transform.gameObject.tag);
-                    if(selection.CompareTag("CUBO1") || selection.CompareTag("CUBO2") || selection.CompareTag("ESFERA"))
+                    if (selection.CompareTag("CUBO1"))
                     {
-                        if (selection.CompareTag("CUBO1"))
-                        {
-                           option=1;
-                        }
-                        if (selection.CompareTag("ESFERA"))
-                        {
-                            option=2;
-                        }
-                        if (selection.CompareTag("CUBO2"))
-                        {
-                            option=3;
-                        }
-                        
-                        isWorking=true;
-                        StartCoroutine(Count());
-                    }   
-                }
+                        option=1;
+                    }
+                    if (selection.CompareTag("ESFERA"))
+                    {
+                        option=2;
+                    }
+                    if (selection.CompareTag("CUBO2"))
+                    {
+                        option=3;
+                    }
+                    isWorking=true;
+                    StartCoroutine(Count());
+                }   
+            }
         }
     }
 
@@ -74,14 +73,11 @@ public class RayCast : MonoBehaviour
         if (Time.time > nextTime)
             {
                 nextTime = Time.time + pauseTime;
-
                 if(totalTime >= 0)
                 {
                 totalTime--;
                 }
             }
-                
-            
             if (totalTime < 0)
             {      
                 totalTime = 0;
@@ -106,5 +102,6 @@ public class RayCast : MonoBehaviour
         }
     
     }
+
 
 }
